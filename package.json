@@ -18,5 +18,10 @@
     "url": "https://github.com/Sanskar-dev786/Major_Project/issues"
   },
   "homepage": "https://github.com/Sanskar-dev786/Major_Project#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "mongoose": "^8.13.0"
+  }
 }
