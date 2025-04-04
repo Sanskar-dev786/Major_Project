@@ -30,7 +30,7 @@ app.use(express.static(path.join(__dirname, "/public")));
 app.get("/", (req, res) => {
   res.send("Hi, I am root");
 });
-
+//5.100 sarfacie intergral
 //Index Route
 app.get("/listings", async (req, res) => {
   const allListings = await Listing.find({});
