@@ -4,21 +4,24 @@ const Listing = require("../models/listing.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/ExpressError.js");
 const Review = require("../models/review.js");
-const { validateReview, isLoggedIn } = require("../middleware.js");
+const {
+  validateReview,
+  isLoggedIn,
+  isReviewAuthor,
+} = require("../middleware.js");
 
 //Post Route
 router.post(
   "/",
-  isLoggedIn,
+  isLoggedIn(),
   validateReview,
   wrapAsync(async (req, res) => {
     console.log(req.params.id);
     let listing = await Listing.findById(req.params.id);
     let newReview = new Review(req.body.review);
     newReview.author = req.user._id;
-    console.log(newReview);
     listing.reviews.push(newReview);
-
+    console.log(newReview);
     await newReview.save();
     await listing.save();
     req.flash("success", "New Review Created!");
@@ -30,9 +33,11 @@ router.post(
 //Delete Review Route
 router.delete(
   "/:reviewId",
+  isLoggedIn(),
+  isReviewAuthor,
   wrapAsync(async (req, res) => {
     let { id, reviewId } = req.params;
-    await Listing.findByIdAndUpdate(id, { pull: { reviews: reviewId } });
+    await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
     await Review.findByIdAndDelete(reviewId);
     req.flash("success", " Review Deleted!");
     res.redirect(`/listings/${id}`);
