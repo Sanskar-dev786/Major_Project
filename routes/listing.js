@@ -5,8 +5,15 @@ const Listing = require("../models/listing.js");
 const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
 const listingController = require("../controllers/listings.js");
 
-//Index Route
-router.get("/", wrapAsync(listingController.index));
+router
+  .route("/")
+  .get(wrapAsync(listingController.index))
+
+  .post(
+    validateListing,
+    isLoggedIn("You must be logged in to create listing!"),
+    wrapAsync(listingController.createListing)
+  );
 
 //New Route
 router.get(
@@ -15,16 +22,20 @@ router.get(
   listingController.renderNewForm
 );
 
-//Show Route
-router.get("/:id", wrapAsync(listingController.showListing));
-
-//Create Route
-router.post(
-  "/",
-  validateListing,
-  isLoggedIn("You must be logged in to create listing!"),
-  wrapAsync(listingController.createListing)
-);
+router
+  .route("/:id")
+  .get(wrapAsync(listingController.showListing))
+  .put(
+    isLoggedIn("You must be logged in to update listing!"),
+    isOwner,
+    validateListing,
+    wrapAsync(listingController.updateListing)
+  )
+  .delete(
+    isLoggedIn("You must be logged in to delete listing!"),
+    isOwner,
+    wrapAsync(listingController.destoryListing)
+  );
 
 //Edit Route
 router.get(
@@ -33,22 +44,4 @@ router.get(
   isOwner,
   wrapAsync(listingController.renderEditForm)
 );
-
-//Update Route
-router.put(
-  "/:id",
-  isLoggedIn("You must be logged in to update listing!"),
-  isOwner,
-  validateListing,
-  wrapAsync(listingController.updateListing)
-);
-
-//Delete Route
-router.delete(
-  "/:id",
-  isLoggedIn("You must be logged in to delete listing!"),
-  isOwner,
-  wrapAsync(listingController.destoryListing)
-);
-
 module.exports = router;
