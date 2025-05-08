@@ -20,6 +20,8 @@
   "homepage": "https://github.com/Sanskar-dev786/Major_Project#readme",
   "description": "",
   "dependencies": {
+    "@mapbox/mapbox-sdk": "^0.16.1",
+    "axios": "^1.9.0",
     "cloudinary": "^1.41.3",
     "connect-flash": "^0.1.1",
     "dotenv": "^16.5.0",
@@ -28,6 +30,7 @@
     "express": "^4.21.2",
     "express-session": "^1.18.1",
     "joi": "^17.13.3",
+    "leaflet": "^1.9.4",
     "method-override": "^3.0.0",
     "mongoose": "^8.13.1",
     "multer": "^1.4.5-lts.2",
